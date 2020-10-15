@@ -19,13 +19,13 @@ func (p *ProductValidator) Validate(i interface{}) error {
 	return p.validator.Struct(i)
 }
 
-// declare & inisialize slice of maps
-var products = []map[int]string{{1: "TVs"}, {2: "Laptops"}, {3: "Desktops"}, {4: "test"}}
+//Products declare & inisialize slice of maps
+var Products = []map[int]string{{1: "TVs"}, {2: "Laptops"}, {3: "Desktops"}, {4: "test"}}
 
 // handler to get all products
 func getProducts(c echo.Context) error {
 	fmt.Printf("getproduct : %v\n", c.Request())
-	return c.JSON(http.StatusOK, products)
+	return c.JSON(http.StatusOK, Products)
 }
 
 // handler to get only one product filtering with id
@@ -36,7 +36,7 @@ func getProduct(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	for _, p := range products {
+	for _, p := range Products {
 		for k := range p {
 			if pID == k {
 				product = p
@@ -70,10 +70,10 @@ func createProduct(c echo.Context) error {
 	}
 	// declare & inisialize a map to store the given product
 	product := map[int]string{
-		len(products) + 1: reqBody.Name,
+		len(Products) + 1: reqBody.Name,
 	}
 	// append the given product to the PRODUCTS slice maps
-	products = append(products, product)
+	Products = append(Products, product)
 	return c.JSON(http.StatusOK, product)
 }
 
@@ -84,7 +84,7 @@ func updateProduct(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	for _, p := range products {
+	for _, p := range Products {
 		for k := range p {
 
 			if pID == k {
@@ -118,7 +118,7 @@ func deleteProduct(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	for i, p := range products {
+	for i, p := range Products {
 		for k := range p {
 			if pID == k {
 				product = p
@@ -132,6 +132,6 @@ func deleteProduct(c echo.Context) error {
 	splice := func(s []map[int]string, index int) []map[int]string {
 		return append(s[:index], s[index+1:]...)
 	}
-	products = splice(products, index)
+	Products = splice(Products, index)
 	return c.NoContent(http.StatusNoContent)
 }
